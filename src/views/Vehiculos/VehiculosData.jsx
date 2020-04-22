@@ -4,9 +4,10 @@ import GridItem from 'components/Grid/GridItem.js'
 import GridContainer from 'components/Grid/GridContainer.js'
 import ListInputs from '../../components/Input/ListInputs'
 import vehiculosFields from '../../variables/fields/vehiculos'
-import useForm from '../../hooks/useForm'
-
 import Button from '../../components/CustomButtons/Button'
+
+import useForm from '../../hooks/useForm'
+import {getSpecificFullDate} from '../../variables/utils'
 
 const VehiculosData = props => {
   const { data, setData, selected, toggle } = props
@@ -21,6 +22,7 @@ const VehiculosData = props => {
     ev.preventDefault()
     let dataUpdated = data
     const newData = form.getJson()
+    newData[4] = getSpecificFullDate(newData[4])
     if (selected) {
       let index = data.findIndex(item => item[0] == selected[0])
       dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
