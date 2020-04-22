@@ -94,7 +94,7 @@ export default function CustomTable(props) {
                           title='Remove'
                           placement='top'
                           classes={{ tooltip: classes.tooltip }}
-                          onClick={() => onRemove(data[0])}
+                          onClick={() => onRemove(data[0], data)}
                         >
                           <IconButton
                             aria-label='Close'

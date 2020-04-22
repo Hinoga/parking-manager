@@ -41,7 +41,6 @@ const InputCustom = ({
           autoComplete='none'
         />
       )
-
       break
     case 'select':
       inputElement = (
@@ -54,7 +53,6 @@ const InputCustom = ({
         </TextField>
       )
       break
-
     case 'date-time':
       inputElement = (
         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -66,7 +64,6 @@ const InputCustom = ({
           />
         </MuiPickersUtilsProvider>
       )
-
       break
     default:
       inputElement = <input {...elementConfig} {...props} autoComplete='none' />

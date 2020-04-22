@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import styles from './style'
-import { parkingData } from '../../variables/parkingData'
 
 const useStyles = makeStyles(styles)
 
-const ParkingView = () => {
+const ParkingView = ({ parkingPlaces }) => {
   const classes = useStyles()
-  const [data, setData] = useState({ ...parkingData })
 
   const getParkingClass = item => {
     let parkinClass = classes.divTableCell
@@ -33,7 +31,7 @@ const ParkingView = () => {
                 {[1, 2, 3].map(j => {
                   return (
                     <div
-                      className={getParkingClass(data[i + j].state)}
+                      className={getParkingClass(parkingPlaces[i + j].state)}
                       key={i + j}
                     >
                       <p>{i + j}</p>

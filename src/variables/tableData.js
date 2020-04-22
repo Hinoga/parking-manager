@@ -6,6 +6,6 @@ export const userData = [
 ]
 
 export const vehiculosData = [
-  ['111', 'Pereira', 'Risaralda', 'Luis', getFullDateNow()],
-  ['222', 'Pereira', 'Risaralda', 'Luis', getFullDateNow()]
+  ['111', 'Pereira', 'Risaralda', 'Luis', 2, getFullDateNow(), 'Carro'],
+  ['222', 'Pereira', 'Risaralda', 'Luis', 3, getFullDateNow(), 'Carro']
 ]

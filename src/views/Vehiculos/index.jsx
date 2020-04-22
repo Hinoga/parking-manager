@@ -16,20 +16,25 @@ import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
 import { vehiculosData } from '../../variables/tableData'
 import VehiculosDataPage from './VehiculosData'
 import ParkingView from 'views/Parqueadero/ParkingView'
+import { parkingData } from '../../variables/parkingData'
 
 const useStyles = makeStyles(styles)
 
-export default function User() {
+export default function Vehiculos() {
   const [data, setData] = useState(vehiculosData)
   const [modal, setModal] = useState(false)
   const [parkingModal, setParkingModal] = useState(false)
+  const [parkingPlaces, setParkingPlaces] = useState({ ...parkingData })
   const [selected, setSelected] = useState(null)
   const classes = useStyles()
 
-  const onRemove = id => {
+  const onRemove = (id, item) => {
     let newData = data.filter(item => {
       if (item[0] !== id) return item
     })
+    let newParkingPlaces = { ...parkingPlaces }
+    newParkingPlaces[item[4]].state = 0
+    setParkingPlaces(newParkingPlaces)
     setData(newData)
   }
 
@@ -44,12 +49,14 @@ export default function User() {
 
   return (
     <GridContainer>
-      <Modal openModal={modal} onToggleModal={handleModal}>
+      <Modal openModal={modal} onToggleModal={handleModal} title='Vehiculo'>
         <VehiculosDataPage
           setData={setData}
           data={data}
           selected={selected}
           toggle={handleModal}
+          setParkingPlaces={setParkingPlaces}
+          parkingPlaces={parkingPlaces}
         />
       </Modal>
       <Modal
@@ -57,7 +64,7 @@ export default function User() {
         onToggleModal={() => setParkingModal(!parkingModal)}
         title='Parqueadero'
       >
-        <ParkingView />
+        <ParkingView parkingPlaces={parkingPlaces} />
       </Modal>
       <GridItem
         xs={12}
@@ -91,7 +98,9 @@ export default function User() {
                 'Cuidad',
                 'Departamento',
                 'Propietario',
-                'Fecha de ingreso'
+                'N. parqueadero',
+                'Fecha de ingreso',
+                'Tipo de vehículo'
               ]}
               tableData={data}
               onRemove={onRemove}

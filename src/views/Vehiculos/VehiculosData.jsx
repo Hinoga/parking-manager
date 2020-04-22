@@ -7,10 +7,17 @@ import vehiculosFields from '../../variables/fields/vehiculos'
 import Button from '../../components/CustomButtons/Button'
 
 import useForm from '../../hooks/useForm'
-import {getSpecificFullDate} from '../../variables/utils'
+import { getSpecificFullDate } from '../../variables/utils'
 
 const VehiculosData = props => {
-  const { data, setData, selected, toggle } = props
+  const {
+    data,
+    setData,
+    selected,
+    toggle,
+    parkingPlaces,
+    setParkingPlaces
+  } = props
   const form = useForm(vehiculosFields)
 
   useEffect(() => {
@@ -22,7 +29,7 @@ const VehiculosData = props => {
     ev.preventDefault()
     let dataUpdated = data
     const newData = form.getJson()
-    newData[4] = getSpecificFullDate(newData[4])
+    newData[5] = getSpecificFullDate(newData[5])
     if (selected) {
       let index = data.findIndex(item => item[0] == selected[0])
       dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
@@ -30,6 +37,9 @@ const VehiculosData = props => {
       toggle()
     } else {
       dataUpdated.unshift(newData)
+      let newParkingPlaces = { ...parkingPlaces }
+      newParkingPlaces[newData[4]].state = 1
+      setParkingPlaces(newParkingPlaces)
       setData(dataUpdated)
       form.onReset()
       toggle()

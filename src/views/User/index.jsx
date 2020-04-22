@@ -56,7 +56,7 @@ export default function User() {
 
   return (
     <GridContainer>
-      <Modal openModal={modal} onToggleModal={handleModal}>
+      <Modal openModal={modal} onToggleModal={handleModal} title='Usuario'>
         <UserDataPage
           setData={setData}
           data={data}
