@@ -21,7 +21,7 @@ const VehiculosData = props => {
   const form = useForm(vehiculosFields)
 
   useEffect(() => {
-    selected && form.onLoad(selected)
+    Object.keys(selected).length && form.onLoad(selected)
     return () => form.onReset()
   }, [selected])
 
@@ -29,16 +29,20 @@ const VehiculosData = props => {
     ev.preventDefault()
     let dataUpdated = data
     const newData = form.getJson()
-    newData[5] = getSpecificFullDate(newData[5])
-    if (selected) {
-      let index = data.findIndex(item => item[0] == selected[0])
+    newData.date = getSpecificFullDate(newData.date)
+    if (Object.keys(selected).length) {
+      let newParkingPlaces = { ...parkingPlaces }
+      let index = data.findIndex(item => item.id == selected.id)
       dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
+      newParkingPlaces[selected.place].state = 0
+      newParkingPlaces[newData.place].state = 1
       setData(dataUpdated)
+      setParkingPlaces(newParkingPlaces)
       toggle()
     } else {
       dataUpdated.unshift(newData)
       let newParkingPlaces = { ...parkingPlaces }
-      newParkingPlaces[newData[4]].state = 1
+      newParkingPlaces[newData.place].state = 1
       setParkingPlaces(newParkingPlaces)
       setData(dataUpdated)
       form.onReset()

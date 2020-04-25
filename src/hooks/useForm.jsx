@@ -21,8 +21,10 @@ const useForm = fieldForm => {
   }
 
   const getJson = () => {
-    const data = []
-    Object.keys(fieldState).map(key => data.push(fieldState[key].value))
+    const data = {}
+    for (const key in fieldState) {
+      data[key] = fieldState[key].value
+    }
     return data
   }
 
@@ -35,9 +37,8 @@ const useForm = fieldForm => {
   }
 
   const onReset = () => {
-    const loadForm = { ...fieldState }
-    Object.keys(loadForm).map((key, indx) => (loadForm[key].value = ''))
-    setFieldState(loadForm)
+    setFieldState({ ...fieldForm })
+    setFormIsValid(false)
   }
 
   const handlerFormValidation = form => {
@@ -81,18 +82,16 @@ const useForm = fieldForm => {
 
   const onLoad = data => {
     const loadForm = { ...fieldState }
-    let i = 0
     for (const formElement in fieldState) {
       loadForm[formElement] = {
         ...fieldState[formElement],
         value: checkOnLoadValue(
           loadForm[formElement].elementConfig.type,
-          data[i]
+          data[formElement]
         ),
         touched: true,
         valid: true
       }
-      i++
     }
     setFieldState(loadForm)
     setFormIsValid(true)

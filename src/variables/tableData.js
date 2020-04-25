@@ -1,11 +1,41 @@
 import { getFullDateNow } from '../variables/utils'
 
 export const userData = [
-  ['111', 'Luis', 'Benitez', 'Dosquebradas', 'luisbenitez@gmail.com'],
-  ['222', 'Luis', 'Benitez', 'Dosquebradas', 'luisbenitez@gmail.com']
+  {
+    id: 10000,
+    name: 'Luis',
+    lastname: 'Benitez',
+    address: 'Dosquebradas',
+    mail: 'luisbenitez@gmail.com'
+  },
+  {
+    id: 21212,
+    name: 'Luis',
+    lastname: 'Benitez',
+    address: 'Dosquebradas',
+    mail: 'luisbenitez@gmail.com'
+  }
 ]
 
 export const vehiculosData = [
-  ['111', 'Pereira', 'Risaralda', 'Luis', 2, getFullDateNow(), 'Carro'],
-  ['222', 'Pereira', 'Risaralda', 'Luis', 3, getFullDateNow(), 'Carro']
+  {
+    id: 1,
+    placa: 111,
+    ciudad: 'Pereira',
+    departamento: 'Risaralda',
+    propietario: 'Luis',
+    place: 2,
+    date: getFullDateNow(),
+    type: 'Carro'
+  },
+  {
+    id: 2,
+    placa: 1131,
+    ciudad: 'Pereira',
+    departamento: 'Risaralda',
+    propietario: 'Luis',
+    place: 3,
+    date: getFullDateNow(),
+    type: 'Carro'
+  }
 ]

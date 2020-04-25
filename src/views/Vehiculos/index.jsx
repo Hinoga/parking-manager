@@ -25,25 +25,27 @@ export default function Vehiculos() {
   const [modal, setModal] = useState(false)
   const [parkingModal, setParkingModal] = useState(false)
   const [parkingPlaces, setParkingPlaces] = useState({ ...parkingData })
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState({})
+  const [idSelected, setIdSelected] = useState(null)
   const classes = useStyles()
 
   const onRemove = (id, item) => {
     let newData = data.filter(item => {
-      if (item[0] !== id) return item
+      if (item.id !== id) return item
     })
     let newParkingPlaces = { ...parkingPlaces }
-    newParkingPlaces[item[4]].state = 0
+    newParkingPlaces[item.place].state = 0
     setParkingPlaces(newParkingPlaces)
     setData(newData)
   }
 
-  const handleModal = ev => {
-    let item = data.map(item => {
-      if (item[0] === ev) return item
-    })
-    !isNaN(ev) && setSelected(item[0])
-    modal && setSelected(null)
+  const handleModal = (id, item) => {
+    item && setSelected(item)
+    !isNaN(id) && setIdSelected(id)
+    if (modal) {
+      setSelected({})
+      setIdSelected(null)
+    }
     setModal(!modal)
   }
 
@@ -93,15 +95,16 @@ export default function Vehiculos() {
           <CardBody>
             <Table
               tableHeaderColor='success'
-              tableHead={[
-                'Placa',
-                'Cuidad',
-                'Departamento',
-                'Propietario',
-                'N. parqueadero',
-                'Fecha de ingreso',
-                'Tipo de vehículo'
-              ]}
+              tableHead={{
+                placa: 'Placa',
+                ciudad: 'Cuidad',
+                departamento: 'Departamento',
+                propietario: 'Propietario',
+                place: 'N. parqueadero',
+                date: 'Fecha de ingreso',
+                type: 'Tipo de vehículo',
+                actions: 'Acciones'
+              }}
               tableData={data}
               onRemove={onRemove}
               onEdit={handleModal}

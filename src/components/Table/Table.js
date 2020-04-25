@@ -20,37 +20,19 @@ const useStyles = makeStyles(styles)
 export default function CustomTable(props) {
   const classes = useStyles()
   const { tableHead, tableData, tableHeaderColor, onEdit, onRemove } = props
-  let tableHeadLength = tableHead.length
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
           <TableHead className={classes[tableHeaderColor + 'TableHeader']}>
             <TableRow className={classes.tableHeadRow}>
-              {tableHead.map((prop, key) => {
-                return tableHeadLength === key + 1 ? (
-                  <>
-                    <TableCell
-                      className={
-                        classes.tableCell + ' ' + classes.tableHeadCell
-                      }
-                      key={key}
-                    >
-                      {prop}
-                    </TableCell>
-                    <TableCell
-                      className={
-                        classes.tableCell + ' ' + classes.tableHeadCell
-                      }
-                      key={key}
-                    ></TableCell>
-                  </>
-                ) : (
+              {Object.keys(tableHead).map(key => {
+                return (
                   <TableCell
                     className={classes.tableCell + ' ' + classes.tableHeadCell}
                     key={key}
                   >
-                    {prop}
+                    {tableHead[key]}
                   </TableCell>
                 )
               })}
@@ -59,22 +41,18 @@ export default function CustomTable(props) {
         ) : null}
         <TableBody>
           {tableData.map((data, key) => {
-            let tableLength = data.length
             return (
               <TableRow key={key} className={classes.tableBodyRow}>
-                {data.map((prop, key) => {
-                  return tableLength === key + 1 ? (
+                {Object.keys(tableHead).map(prop => {
+                  return prop === 'actions' ? (
                     <>
-                      <TableCell className={classes.tableCell} key={key}>
-                        {prop}
-                      </TableCell>
                       <TableCell className={classes.tableActions}>
                         <Tooltip
                           id='tooltip-top'
                           title='Edit Task'
                           placement='top'
                           classes={{ tooltip: classes.tooltip }}
-                          onClick={() => onEdit(data[0])}
+                          onClick={() => onEdit(data.id, data)}
                         >
                           <IconButton
                             aria-label='Edit'
@@ -94,7 +72,7 @@ export default function CustomTable(props) {
                           title='Remove'
                           placement='top'
                           classes={{ tooltip: classes.tooltip }}
-                          onClick={() => onRemove(data[0], data)}
+                          onClick={() => onRemove(data.id, data)}
                         >
                           <IconButton
                             aria-label='Close'
@@ -112,8 +90,8 @@ export default function CustomTable(props) {
                       </TableCell>
                     </>
                   ) : (
-                    <TableCell className={classes.tableCell} key={key}>
-                      {prop}
+                    <TableCell className={classes.tableCell} key={prop}>
+                      {data[prop] && data[prop]}
                     </TableCell>
                   )
                 })}

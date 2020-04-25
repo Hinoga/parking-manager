@@ -13,7 +13,7 @@ const UserData = props => {
   const form = useForm(userFields)
 
   useEffect(() => {
-    selected && form.onLoad(selected)
+    Object.keys(selected).length && form.onLoad(selected)
     return () => form.onReset()
   }, [selected])
 
@@ -21,8 +21,8 @@ const UserData = props => {
     ev.preventDefault()
     let dataUpdated = data
     const newData = form.getJson()
-    if (selected) {
-      let index = data.findIndex(item => item[0] == selected[0])
+    if (Object.keys(selected).length) {
+      let index = data.findIndex(item => item.id == selected.id)
       dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
       setData(dataUpdated)
       toggle()
