@@ -2,14 +2,14 @@ import React, { Suspense } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import Login from './views/Login/Login'
-import HomeRedirect from './views/Auth/HomeRedirect'
 import Admin from 'layouts/Admin.js'
 
 import { useUser } from 'context/user'
+import Spinner from './components/Loading/Spinner'
 import Loading from './components/Loading/Loading'
 
 const Routes = _ => {
-  const [user, dispatchUser] = useUser()
+  const [user] = useUser()
 
   const renderRoutes = _ => {
     return (
@@ -29,14 +29,16 @@ const Routes = _ => {
     )
   }
 
-  return (
+  return !user.status.loading ? (
     <>
-      {user.status !== 'loggedOut' ? (
+      {user.status.loggedIn ? (
         <Suspense fallback={Loading}>{renderRoutes()}</Suspense>
       ) : (
         renderPublicRoutes()
       )}
     </>
+  ) : (
+    <Spinner />
   )
 }
 

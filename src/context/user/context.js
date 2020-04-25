@@ -1,12 +1,16 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 export const initState = {
-  status: "loggedOut",
-  fullname: "",
-  email: "",
-  phone: "",
-};
+  status: {
+    loggedIn: false,
+    loading: true
+  },
+  fullname: '',
+  email: '',
+  phone: '',
+  uid: ''
+}
 
-const UserContext = createContext([initState, {}]);
+const UserContext = createContext([initState, {}])
 
-export default UserContext;
+export default UserContext
