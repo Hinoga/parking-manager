@@ -6,6 +6,21 @@ const firebaseFirestore = (firestore, auth) => ({
     return firestore.doc('users/' + uid)
   },
 
+  clientsData: uid => {
+    return firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('clients')
+  },
+
+  clientData: (uid, clientId) => {
+    return firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('clients')
+      .doc(clientId)
+  },
+
   tarifaData: uid => {
     return firestore.doc('Tarifa/' + uid)
   },

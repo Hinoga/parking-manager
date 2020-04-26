@@ -21,31 +21,31 @@ import { useUser } from 'context/user'
 const useStyles = makeStyles(styles)
 
 export default function User() {
-  const firebase = useFirebase()
+  const classes = useStyles()
   const [user] = useUser()
-
-  // useEffect(() => {
-  //   console.log('useEffect')
-  //   firebase.clientsData(user.uid).onSnapshot(snapshot => {
-  //     console.log('Snapshot', snapshot)
-  //     if (snapshot.exists) {
-  //       console.log(snapshot)
-  //       const data = snapshot.data()
-  //       console.log(data)
-  //     }
-  //   })
-  // }, [])
-
-  // useEffect(async () => {
-  //   const result = await firebase.clientsData(user.uid).get()
-  //   console.log(result);
-  // });
+  const firebase = useFirebase()
 
   const [modal, setModal] = useState(false)
   const [data, setData] = useState(userData)
   const [selected, setSelected] = useState({})
   const [idSelected, setIdSelected] = useState(null)
-  const classes = useStyles()
+
+  useEffect(() => {
+    firebase.clientsData().onSnapshot(
+      snapshot => {
+        if (snapshot.docs.length) {
+          const clientsToSave = snapshot.docs.map(snap => ({
+            id: snap.id,
+            ...snap.data()
+          }))
+          setData(clientsToSave)
+        }
+      },
+      error => {
+        console.error(error)
+      }
+    )
+  }, [])
 
   const onRemove = (id, item) => {
     let newData = data.filter(item => {
