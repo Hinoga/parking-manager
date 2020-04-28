@@ -5,11 +5,16 @@ import GridContainer from 'components/Grid/GridContainer.js'
 import ListInputs from '../../components/Input/ListInputs'
 import vehiculosFields from '../../variables/fields/vehiculos'
 import Button from '../../components/CustomButtons/Button'
+import { useFirebase } from '../../context/firebase'
+import { snackMessage } from '../../variables/alert/alerts'
 
 import useForm from '../../hooks/useForm'
 import { getSpecificFullDate } from '../../variables/utils'
 
 const VehiculosData = props => {
+  const firebase = useFirebase()
+  const form = useForm(vehiculosFields)
+
   const {
     data,
     setData,
@@ -18,7 +23,6 @@ const VehiculosData = props => {
     parkingPlaces,
     setParkingPlaces
   } = props
-  const form = useForm(vehiculosFields)
 
   useEffect(() => {
     Object.keys(selected).length && form.onLoad(selected)
@@ -27,26 +31,59 @@ const VehiculosData = props => {
 
   const handlerSubmit = ev => {
     ev.preventDefault()
-    let dataUpdated = data
     const newData = form.getJson()
     newData.date = getSpecificFullDate(newData.date)
     if (Object.keys(selected).length) {
+      firebase
+        .vehicleData(selected.id)
+        .update({
+          ...newData
+        })
+        .then(_ => {
+          snackMessage(
+            'Felicidades!',
+            'El vehiculo ha sido ingresado exitosamente',
+            'success'
+          )
+          form.onReset()
+          toggle()
+        })
+        .catch(error => {
+          snackMessage(
+            'Ups!',
+            'Ha ocurrido un error al intentar editar el vehiculo',
+            'error'
+          )
+        })
       let newParkingPlaces = { ...parkingPlaces }
-      let index = data.findIndex(item => item.id == selected.id)
-      dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
       newParkingPlaces[selected.place].state = 0
       newParkingPlaces[newData.place].state = 1
-      setData(dataUpdated)
       setParkingPlaces(newParkingPlaces)
-      toggle()
     } else {
-      dataUpdated.unshift(newData)
+      firebase
+        .vehiclesData()
+        .add({
+          ...newData
+        })
+        .then(_ => {
+          snackMessage(
+            'Felicidades!',
+            'El usuario ha sido creado exitosamente',
+            'success'
+          )
+          form.onReset()
+          toggle()
+        })
+        .catch(error => {
+          snackMessage(
+            'Ups!',
+            'Ha ocurrido un error al intentar crear el usuario',
+            'error'
+          )
+        })
       let newParkingPlaces = { ...parkingPlaces }
       newParkingPlaces[newData.place].state = 1
       setParkingPlaces(newParkingPlaces)
-      setData(dataUpdated)
-      form.onReset()
-      toggle()
     }
   }
 

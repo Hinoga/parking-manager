@@ -19,7 +19,14 @@ const useStyles = makeStyles(styles)
 
 export default function CustomTable(props) {
   const classes = useStyles()
-  const { tableHead, tableData, tableHeaderColor, onEdit, onRemove } = props
+  const {
+    tableHead,
+    tableData,
+    tableHeaderColor,
+    onEdit,
+    onRemove,
+    extraActions
+  } = props
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -47,46 +54,71 @@ export default function CustomTable(props) {
                   return prop === 'actions' ? (
                     <>
                       <TableCell className={classes.tableActions}>
-                        <Tooltip
-                          id='tooltip-top'
-                          title='Edit Task'
-                          placement='top'
-                          classes={{ tooltip: classes.tooltip }}
-                          onClick={() => onEdit(data.id, data)}
-                        >
-                          <IconButton
-                            aria-label='Edit'
-                            className={classes.tableActionButton}
+                        {onEdit && (
+                          <Tooltip
+                            id='tooltip-top'
+                            title='Editar'
+                            placement='top'
+                            classes={{ tooltip: classes.tooltip }}
+                            onClick={() => onEdit(data.id, data)}
                           >
-                            <Edit
-                              className={
-                                classes.tableActionButtonIcon +
-                                ' ' +
-                                classes.edit
-                              }
-                            />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip
-                          id='tooltip-top-start'
-                          title='Remove'
-                          placement='top'
-                          classes={{ tooltip: classes.tooltip }}
-                          onClick={() => onRemove(data.id, data)}
-                        >
-                          <IconButton
-                            aria-label='Close'
-                            className={classes.tableActionButton}
+                            <IconButton
+                              aria-label='Edit'
+                              className={classes.tableActionButton}
+                            >
+                              <Edit
+                                className={
+                                  classes.tableActionButtonIcon +
+                                  ' ' +
+                                  classes.edit
+                                }
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                        {onRemove && (
+                          <Tooltip
+                            id='tooltip-top-start'
+                            title='Eliminar'
+                            placement='top'
+                            classes={{ tooltip: classes.tooltip }}
+                            onClick={() => onRemove(data.id, data)}
                           >
-                            <Close
-                              className={
-                                classes.tableActionButtonIcon +
-                                ' ' +
-                                classes.close
-                              }
-                            />
-                          </IconButton>
-                        </Tooltip>
+                            <IconButton
+                              aria-label='Close'
+                              className={classes.tableActionButton}
+                            >
+                              <Close
+                                className={
+                                  classes.tableActionButtonIcon +
+                                  ' ' +
+                                  classes.close
+                                }
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                        {extraActions &&
+                          extraActions.map(item => {
+                            return (
+                              <Tooltip
+                                id={item.title}
+                                title={item.title}
+                                placement='top'
+                                classes={{ tooltip: classes.tooltip }}
+                                onClick={() => item.action(data.id, data)}
+                              >
+                                <IconButton
+                                  aria-label={item.title}
+                                  className={classes.tableActionButton}
+                                >
+                                  <item.Component
+                                    className={classes.tableActionButtonIcon}
+                                  />
+                                </IconButton>
+                              </Tooltip>
+                            )
+                          })}
                       </TableCell>
                     </>
                   ) : (

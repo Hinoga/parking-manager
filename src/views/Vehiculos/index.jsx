@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -12,41 +12,59 @@ import CardBody from 'components/Card/CardBody.js'
 import Button from 'components/CustomButtons/Button.js'
 
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
+import Receipt from '@material-ui/icons/Receipt'
 
 import { vehiculosData } from '../../variables/tableData'
 import VehiculosDataPage from './VehiculosData'
 import ParkingView from 'views/Parqueadero/ParkingView'
 import { parkingData } from '../../variables/parkingData'
+import { snackMessage, questionMessage } from '../../variables/alert/alerts'
+import { useFirebase } from '../../context/firebase'
+import ReceiptView from '../Receipt/Receipt'
 
 const useStyles = makeStyles(styles)
 
 export default function Vehiculos() {
-  const [data, setData] = useState(vehiculosData)
+  const classes = useStyles()
+  const firebase = useFirebase()
+  const [data, setData] = useState([])
   const [modal, setModal] = useState(false)
   const [parkingModal, setParkingModal] = useState(false)
   const [parkingPlaces, setParkingPlaces] = useState({ ...parkingData })
   const [selected, setSelected] = useState({})
-  const [idSelected, setIdSelected] = useState(null)
-  const classes = useStyles()
+  const [receiptModal, setReceiptModal] = useState(false)
 
-  const onRemove = (id, item) => {
-    let newData = data.filter(item => {
-      if (item.id !== id) return item
-    })
-    let newParkingPlaces = { ...parkingPlaces }
-    newParkingPlaces[item.place].state = 0
-    setParkingPlaces(newParkingPlaces)
-    setData(newData)
-  }
+  useEffect(() => {
+    firebase.vehiclesData().onSnapshot(
+      snapshot => {
+        if (snapshot.docs.length) {
+          const vehiclesToSave = snapshot.docs.map(snap => ({
+            id: snap.id,
+            ...snap.data()
+          }))
+          setData(vehiclesToSave)
+        }
+      },
+      error => {
+        snackMessage(
+          'Ups!',
+          'Ha ocurrido un error al intentar obtener los vehiculos',
+          'error'
+        )
+      }
+    )
+  }, [])
 
   const handleModal = (id, item) => {
     item && setSelected(item)
-    !isNaN(id) && setIdSelected(id)
-    if (modal) {
-      setSelected({})
-      setIdSelected(null)
-    }
+    modal && setSelected({})
     setModal(!modal)
+  }
+
+  const handleReceiptModal = (id, item) => {
+    item && setSelected(item)
+    receiptModal && setSelected({})
+    setReceiptModal(!receiptModal)
   }
 
   return (
@@ -60,6 +78,9 @@ export default function Vehiculos() {
           setParkingPlaces={setParkingPlaces}
           parkingPlaces={parkingPlaces}
         />
+      </Modal>
+      <Modal openModal={receiptModal} onToggleModal={handleReceiptModal}>
+        <ReceiptView selected={selected} />
       </Modal>
       <Modal
         openModal={parkingModal}
@@ -106,8 +127,14 @@ export default function Vehiculos() {
                 actions: 'Acciones'
               }}
               tableData={data}
-              onRemove={onRemove}
               onEdit={handleModal}
+              extraActions={[
+                {
+                  title: 'Generar recibo',
+                  action: handleReceiptModal,
+                  Component: () => <Receipt />
+                }
+              ]}
             />
           </CardBody>
         </Card>

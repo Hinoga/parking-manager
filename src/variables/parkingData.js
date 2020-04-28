@@ -5,11 +5,11 @@ export const parkingData = {
   },
   2: {
     name: '',
-    state: 1
+    state: 0
   },
   3: {
     name: '',
-    state: 1
+    state: 0
   },
   4: {
     name: '',

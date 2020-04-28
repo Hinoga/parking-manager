@@ -11,24 +11,18 @@ import CardHeader from 'components/Card/CardHeader.js'
 import CardBody from 'components/Card/CardBody.js'
 import Button from 'components/CustomButtons/Button.js'
 
+import { snackMessage, questionMessage } from '../../variables/alert/alerts'
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
-
-import { userData } from '../../variables/tableData'
-import UserDataPage from './UserData'
-
 import { useFirebase } from '../../context/firebase'
-import { useUser } from 'context/user'
+import UserDataPage from './UserData'
 const useStyles = makeStyles(styles)
 
 export default function User() {
   const classes = useStyles()
-  const [user] = useUser()
   const firebase = useFirebase()
-
   const [modal, setModal] = useState(false)
-  const [data, setData] = useState(userData)
+  const [data, setData] = useState([])
   const [selected, setSelected] = useState({})
-  const [idSelected, setIdSelected] = useState(null)
 
   useEffect(() => {
     firebase.clientsData().onSnapshot(
@@ -42,25 +36,45 @@ export default function User() {
         }
       },
       error => {
-        console.error(error)
+        snackMessage(
+          'Ups!',
+          'Ha ocurrido un error al intentar obtener los usuarios',
+          'error'
+        )
       }
     )
   }, [])
 
   const onRemove = (id, item) => {
-    let newData = data.filter(item => {
-      if (item.id !== id) return item
-    })
-    setData(newData)
+    questionMessage(
+      'Cuidado',
+      '¿Seguro que quieres eliminar este usuario?',
+      'warn',
+      () => {
+        firebase
+          .clientData(item.id)
+          .delete()
+          .then(_ => {
+            snackMessage(
+              'Felicidades!',
+              'El usuario ha sido eliminado exitosamente',
+              'success'
+            )
+          })
+          .catch(error => {
+            snackMessage(
+              'Ups!',
+              'Ha ocurrido un error al intentar eliminar el usuario',
+              'error'
+            )
+          })
+      }
+    )
   }
 
   const handleModal = (id, item) => {
     item && setSelected(item)
-    !isNaN(id) && setIdSelected(id)
-    if (modal) {
-      setSelected({})
-      setIdSelected(null)
-    }
+    modal && setSelected({})
     setModal(!modal)
   }
 
@@ -99,7 +113,7 @@ export default function User() {
             <Table
               tableHeaderColor='success'
               tableHead={{
-                id: 'Identificación',
+                identification: 'Identificación',
                 name: 'Nombre',
                 lastname: 'Apellido',
                 address: 'Dirección',

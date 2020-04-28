@@ -1,5 +1,5 @@
 export default {
-  id: {
+  identification: {
     elementLabel: 'Identificación',
     elementType: 'input',
     elementConfig: {

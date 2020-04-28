@@ -5,7 +5,7 @@ import Login from './views/Login/Login'
 import Admin from 'layouts/Admin.js'
 
 import { useUser } from 'context/user'
-import Spinner from './components/Loading/Spinner'
+import Spinner from './components/Lottie/LoadingAnimation'
 import Loading from './components/Loading/Loading'
 
 const Routes = _ => {

@@ -1,40 +1,34 @@
 import firebase from '@firebase/app'
 
 const firebaseFirestore = (firestore, auth) => ({
-  //ACA METE LAS CONSULTAS
   userData: uid => {
     return firestore.doc('users/' + uid)
   },
-
-  clientsData: uid => {
+  clientsData: _ => {
     return firestore
       .collection('users')
       .doc(auth.currentUser.uid)
       .collection('clients')
   },
-
-  clientData: (uid, clientId) => {
+  clientData: clientId => {
     return firestore
       .collection('users')
       .doc(auth.currentUser.uid)
       .collection('clients')
       .doc(clientId)
   },
-
-  tarifaData: uid => {
-    return firestore.doc('Tarifa/' + uid)
+  vehiclesData: _ => {
+    return firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('vehicles')
   },
-
-  balanceData: uid => {
-    return firestore.doc('Balance/' + uid)
-  },
-
-  vehiculoData: uid => {
-    return firestore.doc('Vehiculo/' + uid)
-  },
-
-  usuarioData: uid => {
-    return firestore.doc('usuario/' + uid)
+  vehicleData: vehicleId => {
+    return firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('vehicles')
+      .doc(vehicleId)
   }
 })
 

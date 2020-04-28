@@ -5,11 +5,14 @@ import GridContainer from 'components/Grid/GridContainer.js'
 import ListInputs from '../../components/Input/ListInputs'
 import userFields from '../../variables/fields/user'
 import useForm from '../../hooks/useForm'
+import { useFirebase } from '../../context/firebase'
+import { snackMessage } from '../../variables/alert/alerts'
 
 import Button from '../../components/CustomButtons/Button'
 
 const UserData = props => {
-  const { data, setData, selected, toggle } = props
+  const { selected, toggle } = props
+  const firebase = useFirebase()
   const form = useForm(userFields)
 
   useEffect(() => {
@@ -19,18 +22,51 @@ const UserData = props => {
 
   const handlerSubmit = ev => {
     ev.preventDefault()
-    let dataUpdated = data
     const newData = form.getJson()
     if (Object.keys(selected).length) {
-      let index = data.findIndex(item => item.id == selected.id)
-      dataUpdated = [...data.slice(0, index), newData, ...data.slice(index + 1)]
-      setData(dataUpdated)
-      toggle()
+      firebase
+        .clientData(selected.id)
+        .update({
+          ...newData
+        })
+        .then(_ => {
+          snackMessage(
+            'Felicidades!',
+            'El usuario ha sido editado exitosamente',
+            'success'
+          )
+          form.onReset()
+          toggle()
+        })
+        .catch(error => {
+          snackMessage(
+            'Ups!',
+            'Ha ocurrido un error al intentar editar el usuario',
+            'error'
+          )
+        })
     } else {
-      dataUpdated.unshift(newData)
-      setData(dataUpdated)
-      form.onReset()
-      toggle()
+      firebase
+        .clientsData()
+        .add({
+          ...newData
+        })
+        .then(_ => {
+          snackMessage(
+            'Felicidades!',
+            'El usuario ha sido creado exitosamente',
+            'success'
+          )
+          form.onReset()
+          toggle()
+        })
+        .catch(error => {
+          snackMessage(
+            'Ups!',
+            'Ha ocurrido un error al intentar crear el usuario',
+            'error'
+          )
+        })
     }
   }
 
@@ -49,7 +85,7 @@ const UserData = props => {
           }}
         >
           <Button color='success' type='submit' disabled={!form.formIsValid}>
-            {selected ? 'Editar' : 'Crear'}
+            {Object.keys(selected).length ? 'Editar' : 'Crear'}
           </Button>
         </GridItem>
       </GridContainer>

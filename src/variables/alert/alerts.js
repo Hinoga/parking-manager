@@ -58,7 +58,7 @@ export const questionMessage = (title, msg, type, cb) => {
     overlay: true,
     zindex: 99999,
     title,
-    iconUrl: config.urlIcon,
+    // iconUrl: config.urlIcon,
     color: config.color,
     message: msg,
     animateInside: true,
