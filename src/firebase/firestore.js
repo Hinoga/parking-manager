@@ -29,6 +29,12 @@ const firebaseFirestore = (firestore, auth) => ({
       .doc(auth.currentUser.uid)
       .collection('vehicles')
       .doc(vehicleId)
+  },
+  receiptData: _ => {
+    return firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('receipts')
   }
 })
 

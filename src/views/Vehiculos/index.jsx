@@ -62,9 +62,35 @@ export default function Vehiculos() {
   }
 
   const handleReceiptModal = (id, item) => {
-    item && setSelected(item)
-    receiptModal && setSelected({})
-    setReceiptModal(!receiptModal)
+    questionMessage('', '¿Quieres generar el recibo?', 'info', () => {
+      firebase
+        .vehicleData(item.id)
+        .delete()
+        .then(_ => {
+          firebase
+            .receiptData()
+            .add({
+              ...item
+            })
+            .then(_ => {
+              item && setSelected(item)
+              receiptModal && setSelected({})
+              setReceiptModal(!receiptModal)
+              snackMessage(
+                'Felicidades!',
+                'El recibo se generó exitosamente',
+                'success'
+              )
+            })
+        })
+        .catch(error => {
+          snackMessage(
+            'Ups!',
+            'Ha ocurrido un error al intentar generar el recibo',
+            'error'
+          )
+        })
+    })
   }
 
   return (
