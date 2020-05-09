@@ -1,38 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 
 import GridItem from 'components/Grid/GridItem.js'
 import GridContainer from 'components/Grid/GridContainer.js'
 import ListInputs from '../../components/Input/ListInputs'
-import vehiculosFields from '../../variables/fields/vehiculos'
+import { fullInfo, basicInfo } from '../../variables/fields/vehiculos'
 import Button from '../../components/CustomButtons/Button'
 import { useFirebase } from '../../context/firebase'
 import { snackMessage } from '../../variables/alert/alerts'
 
 import useForm from '../../hooks/useForm'
 import { getSpecificFullDate } from '../../variables/utils'
+import SearchUser from '../User/SearchUser'
+import NewVehicleType from './NewVehicleType'
 
 const VehiculosData = props => {
+  const { selected, toggle, parkingPlaces, setParkingPlaces } = props
   const firebase = useFirebase()
-  const form = useForm(vehiculosFields)
-
-  const {
-    data,
-    setData,
-    selected,
-    toggle,
-    parkingPlaces,
-    setParkingPlaces
-  } = props
+  const [isFullInfo, setIsFullInfo] = useState(true)
+  const [userSelected, setUserSelected] = useState('')
+  const fullForm = useForm(fullInfo)
+  const basicForm = useForm(basicInfo)
 
   useEffect(() => {
-    Object.keys(selected).length && form.onLoad(selected)
-    return () => form.onReset()
+    if (Object.keys(selected).length) {
+      isFullInfo ? fullForm.onLoad(selected) : basicForm.onLoad(selected)
+    }
+    return () => {
+      isFullInfo ? fullForm.onReset() : basicForm.onReset()
+    }
   }, [selected])
 
   const handlerSubmit = ev => {
     ev.preventDefault()
-    const newData = form.getJson()
+    const newData = isFullInfo ? fullForm.getJson() : basicForm.getJson()
     newData.date = getSpecificFullDate(newData.date)
+    if (userSelected) newData.user = userSelected
     if (Object.keys(selected).length) {
       firebase
         .vehicleData(selected.id)
@@ -45,7 +47,6 @@ const VehiculosData = props => {
             'El vehiculo ha sido ingresado exitosamente',
             'success'
           )
-          form.onReset()
           toggle()
         })
         .catch(error => {
@@ -71,7 +72,6 @@ const VehiculosData = props => {
             'El usuario ha sido creado exitosamente',
             'success'
           )
-          form.onReset()
           toggle()
         })
         .catch(error => {
@@ -87,26 +87,47 @@ const VehiculosData = props => {
     }
   }
 
+  const handleVehicleType = isFull => {
+    setIsFullInfo(isFull)
+    isFull ? basicForm.onReset() : fullForm.onReset()
+  }
+
   return (
-    <form onSubmit={handlerSubmit}>
-      <GridContainer>
-        <ListInputs inputs={form.onRender()} changed={form.onChanged} />
-        <GridItem
-          xs={12}
-          sm={12}
-          md={12}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '10px'
-          }}
-        >
-          <Button color='success' type='submit' disabled={!form.formIsValid}>
-            {Object.keys(selected).length ? 'Editar' : 'Crear'}
-          </Button>
-        </GridItem>
-      </GridContainer>
-    </form>
+    <>
+      <NewVehicleType
+        handleVehicleType={handleVehicleType}
+        isFullInfo={isFullInfo}
+      />
+      <form onSubmit={handlerSubmit}>
+        <GridContainer>
+          {isFullInfo && <SearchUser setUserSelected={setUserSelected} />}
+          <ListInputs
+            inputs={isFullInfo ? fullForm.onRender() : basicForm.onRender()}
+            changed={isFullInfo ? fullForm.onChanged : basicForm.onChanged}
+          />
+          <GridItem
+            xs={12}
+            sm={12}
+            md={12}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '10px'
+            }}
+          >
+            <Button
+              color='success'
+              type='submit'
+              disabled={
+                isFullInfo ? !fullForm.formIsValid : !basicForm.formIsValid
+              }
+            >
+              {Object.keys(selected).length ? 'Editar' : 'Crear'}
+            </Button>
+          </GridItem>
+        </GridContainer>
+      </form>
+    </>
   )
 }
 

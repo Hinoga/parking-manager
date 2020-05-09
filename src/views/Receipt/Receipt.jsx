@@ -6,13 +6,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
-const numToCurrency = number => {
-  let n = number ? number : 0
-  return new Intl.NumberFormat('co-CO', {
-    style: 'currency',
-    currency: 'COP'
-  }).format(n)
-}
+import { numToCurrency } from '../../variables/utils'
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -26,28 +20,37 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Review = props => {
+const Review = ({ selected }) => {
   const classes = useStyles()
 
   return (
     <List disablePadding>
-      <ListItem className={classes.listItem} key={'name'}>
-        <ListItemText primary={'Placa'} secondary={'XRZ-184'} />
-        <ListItemText primary={`Duración:`} secondary={'5hr y 35m'} />
-        <Typography variant='body2'>{numToCurrency(24300)}</Typography>
-      </ListItem>
-
       <ListItem className={classes.listItem}>
-        <ListItemText primary='IVA:' />
-        <Typography variant='subtitle1' className={classes.total}>
-          {numToCurrency(700)}
+        <ListItemText primary={'Placa'} />
+        <Typography variant='body2'>{selected.placa}</Typography>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <ListItemText primary={'Tipo de vehiculo:'} />
+        <Typography variant='body2'>{selected.type}</Typography>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <ListItemText primary={'Fecha y hora de ingreso'} />
+        <Typography variant='body2'>{selected.initialDate}</Typography>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <ListItemText primary={'Fecha y hora de salida'} />
+        <Typography variant='body2'>{selected.finalDate}</Typography>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <ListItemText primary={`Duración:`} />
+        <Typography variant='body2'>
+          {selected.totalHrs} {selected.totalHrs === 1 ? 'Hora' : 'Horas'}
         </Typography>
       </ListItem>
-
       <ListItem className={classes.listItem}>
-        <ListItemText primary='Total con IVA:' />
+        <ListItemText primary='Total a pagar:' />
         <Typography variant='subtitle1' className={classes.total}>
-          {numToCurrency(25000)}
+          {numToCurrency(selected.cost)}
         </Typography>
       </ListItem>
     </List>

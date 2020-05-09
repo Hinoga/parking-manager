@@ -60,7 +60,7 @@ export default function CustomTable(props) {
                             title='Editar'
                             placement='top'
                             classes={{ tooltip: classes.tooltip }}
-                            onClick={() => onEdit(data.id, data)}
+                            onClick={() => onEdit(data.id, data, key)}
                           >
                             <IconButton
                               aria-label='Edit'
@@ -82,7 +82,7 @@ export default function CustomTable(props) {
                             title='Eliminar'
                             placement='top'
                             classes={{ tooltip: classes.tooltip }}
-                            onClick={() => onRemove(data.id, data)}
+                            onClick={() => onRemove(data.id, data, key)}
                           >
                             <IconButton
                               aria-label='Close'
@@ -106,7 +106,7 @@ export default function CustomTable(props) {
                                 title={item.title}
                                 placement='top'
                                 classes={{ tooltip: classes.tooltip }}
-                                onClick={() => item.action(data.id, data)}
+                                onClick={() => item.action(data.id, data, key)}
                               >
                                 <IconButton
                                   aria-label={item.title}

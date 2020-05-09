@@ -14,25 +14,25 @@ import Button from 'components/CustomButtons/Button.js'
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
 import Receipt from '@material-ui/icons/Receipt'
 
-import { vehiculosData } from '../../variables/tableData'
+import ReceiptView from '../Receipt/Receipt'
 import VehiculosDataPage from './VehiculosData'
 import ParkingView from 'views/Parqueadero/ParkingView'
 import { parkingData } from '../../variables/parkingData'
+import { getTotalCost } from '../../variables/utils'
 import { snackMessage, questionMessage } from '../../variables/alert/alerts'
 import { useFirebase } from '../../context/firebase'
-import ReceiptView from '../Receipt/Receipt'
+import { useModalWithData } from '../../hooks/useModal'
 
 const useStyles = makeStyles(styles)
 
 export default function Vehiculos() {
   const classes = useStyles()
   const firebase = useFirebase()
+  const receiptModal = useModalWithData()
+  const vehicleData = useModalWithData()
   const [data, setData] = useState([])
-  const [modal, setModal] = useState(false)
   const [parkingModal, setParkingModal] = useState(false)
   const [parkingPlaces, setParkingPlaces] = useState({ ...parkingData })
-  const [selected, setSelected] = useState({})
-  const [receiptModal, setReceiptModal] = useState(false)
 
   useEffect(() => {
     firebase.vehiclesData().onSnapshot(
@@ -56,26 +56,31 @@ export default function Vehiculos() {
   }, [])
 
   const handleModal = (id, item) => {
-    item && setSelected(item)
-    modal && setSelected({})
-    setModal(!modal)
+    item && vehicleData.handleModal(item)
+    vehicleData.handleModal()
   }
 
-  const handleReceiptModal = (id, item) => {
+  const handleReceiptModal = (id, item, key) => {
     questionMessage('', '¿Quieres generar el recibo?', 'info', () => {
       firebase
         .vehicleData(item.id)
         .delete()
         .then(_ => {
+          const newVehicleData = [...data.slice(0, key), ...data.slice(key + 1)]
+          setData(newVehicleData)
+          const { date, id: uid, ...rest } = item
+          const receiptNewData = {
+            ...rest,
+            initialDate: date,
+            ...getTotalCost(date, rest.type)
+          }
           firebase
             .receiptData()
             .add({
-              ...item
+              ...receiptNewData
             })
             .then(_ => {
-              item && setSelected(item)
-              receiptModal && setSelected({})
-              setReceiptModal(!receiptModal)
+              receiptModal.handleModal(receiptNewData)
               snackMessage(
                 'Felicidades!',
                 'El recibo se generó exitosamente',
@@ -95,18 +100,23 @@ export default function Vehiculos() {
 
   return (
     <GridContainer>
-      <Modal openModal={modal} onToggleModal={handleModal} title='Vehiculo'>
+      <Modal
+        openModal={vehicleData.modal}
+        onToggleModal={vehicleData.handleModal}
+        title='Vehiculo'
+      >
         <VehiculosDataPage
-          setData={setData}
-          data={data}
-          selected={selected}
-          toggle={handleModal}
+          selected={vehicleData.selected}
+          toggle={vehicleData.handleModal}
           setParkingPlaces={setParkingPlaces}
           parkingPlaces={parkingPlaces}
         />
       </Modal>
-      <Modal openModal={receiptModal} onToggleModal={handleReceiptModal}>
-        <ReceiptView selected={selected} />
+      <Modal
+        openModal={receiptModal.modal}
+        onToggleModal={() => receiptModal.handleModal()}
+      >
+        <ReceiptView selected={receiptModal.selected} />
       </Modal>
       <Modal
         openModal={parkingModal}
@@ -145,8 +155,7 @@ export default function Vehiculos() {
               tableHead={{
                 placa: 'Placa',
                 ciudad: 'Cuidad',
-                departamento: 'Departamento',
-                propietario: 'Propietario',
+                user: 'Usuario',
                 place: 'N. parqueadero',
                 date: 'Fecha de ingreso',
                 type: 'Tipo de vehículo',

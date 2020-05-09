@@ -46,7 +46,7 @@ export const snackMessage = (title, msg, type, duration) => {
     // iconUrl: config.urlIcon,
     timeout: duration || 4000,
     messageSize: 15,
-    zindex: 999
+    zindex: 9999
   })
 }
 
