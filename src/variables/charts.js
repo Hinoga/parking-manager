@@ -18,14 +18,14 @@ var delays2 = 80,
 const dailySalesChart = {
   data: {
     labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
-    series: [[12, 17, 7, 17, 23, 18, 38]]
+    series: [[0, 0, 0, 0, 0, 0, 0]]
   },
   options: {
     lineSmooth: Chartist.Interpolation.cardinal({
       tension: 0
     }),
     low: 0,
-    high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 16, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
       right: 0,
@@ -71,15 +71,28 @@ const dailySalesChart = {
 
 const emailsSubscriptionChart = {
   data: {
-    labels: ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
-    series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
+    labels: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
+    series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
   },
   options: {
     axisX: {
       showGrid: false
     },
     low: 0,
-    high: 1000,
+    high: 15,
     chartPadding: {
       top: 0,
       right: 5,
@@ -123,15 +136,28 @@ const emailsSubscriptionChart = {
 
 const completedTasksChart = {
   data: {
-    labels: ['6am', '8am', '10am', '12m', '2pm', '4pm', '6pm', '8pm'],
-    series: [[30, 60, 20, 80, 70, 40, 10, 5]]
+    labels: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
+    series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
   },
   options: {
     lineSmooth: Chartist.Interpolation.cardinal({
       tension: 0
     }),
     low: 0,
-    high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
       right: 0,

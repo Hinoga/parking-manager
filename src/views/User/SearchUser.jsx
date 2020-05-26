@@ -18,7 +18,9 @@ const SearchUser = ({ setUserSelected }) => {
             let client = { ...snap.data() }
             return {
               id: snap.id,
-              name: `${client.name} ${client.lastname}`
+              name: `${client.name} ${client.lastname}`,
+              placa: client.placa,
+              ciudad: client.ciudad
             }
           })
           setData(clientsToSave)
@@ -36,7 +38,7 @@ const SearchUser = ({ setUserSelected }) => {
 
   const handleOnChange = (ev, value) => {
     setInput(value)
-    setUserSelected && setUserSelected(value.name)
+    setUserSelected && setUserSelected(value)
   }
 
   return (

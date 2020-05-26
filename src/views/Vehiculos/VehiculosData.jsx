@@ -17,7 +17,7 @@ const VehiculosData = props => {
   const { selected, toggle, parkingPlaces, setParkingPlaces } = props
   const firebase = useFirebase()
   const [isFullInfo, setIsFullInfo] = useState(true)
-  const [userSelected, setUserSelected] = useState('')
+  const [userSelected, setUserSelected] = useState({})
   const fullForm = useForm(fullInfo)
   const basicForm = useForm(basicInfo)
 
@@ -30,11 +30,17 @@ const VehiculosData = props => {
     }
   }, [selected])
 
+  useEffect(() => {
+    if (Object.keys(userSelected).length) {
+      fullForm.onLoad(userSelected)
+    }
+  }, [userSelected])
+
   const handlerSubmit = ev => {
     ev.preventDefault()
     const newData = isFullInfo ? fullForm.getJson() : basicForm.getJson()
     newData.date = getSpecificFullDate(newData.date)
-    if (userSelected) newData.user = userSelected
+    if (Object.keys(userSelected).length) newData.user = userSelected.name
     if (Object.keys(selected).length) {
       firebase
         .vehicleData(selected.id)

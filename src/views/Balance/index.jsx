@@ -1,10 +1,9 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 import ChartistGraph from 'react-chartist'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import AccessTime from '@material-ui/icons/AccessTime'
 
 import GridItem from 'components/Grid/GridItem.js'
@@ -21,47 +20,147 @@ import {
 } from 'variables/charts.js'
 
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
-
+import { useFirebase } from '../../context/firebase'
+import {
+  getLastWeekDates,
+  getRangeDateItems,
+  getActualYearDates
+} from '../../variables/utils'
 const useStyles = makeStyles(styles)
 
 export default function Balance() {
+  const firebase = useFirebase()
+  const [userData, setUserData] = useState([])
+  const [vehicleData, setVehicleData] = useState([])
+
+  useEffect(() => {
+    firebase.receiptData().onSnapshot(snapshot => {
+      if (snapshot.docs.length) {
+        const vehiclesToSave = snapshot.docs.map(snap => ({
+          id: snap.id,
+          ...snap.data()
+        }))
+        setVehicleData(vehiclesToSave)
+      }
+    })
+    firebase.clientsData().onSnapshot(snapshot => {
+      if (snapshot.docs.length) {
+        const clientsToSave = snapshot.docs.map(snap => ({
+          id: snap.id,
+          ...snap.data()
+        }))
+        setUserData(clientsToSave)
+      }
+    })
+  }, [])
+
+  const getUsersByWeek = data => {
+    if (userData.length) {
+      const lastWeekDate = getLastWeekDates()
+      getRangeDateItems({
+        data: userData,
+        itemProperty: 'created',
+        start: lastWeekDate.start,
+        end: lastWeekDate.end
+      }).map(item => {
+        const date = moment(item.created)
+        data.series[0][date.day() - 1]++
+      })
+    }
+    return data
+  }
+
+  const getUsersByMonth = data => {
+    if (userData.length) {
+      const lastYearDates = getActualYearDates()
+      getRangeDateItems({
+        data: userData,
+        itemProperty: 'created',
+        start: lastYearDates.start,
+        end: lastYearDates.end
+      }).map(item => {
+        const date = moment(item.created)
+        data.series[0][date.month()]++
+      })
+    }
+    return data
+  }
+
+  const getVehiclesByDay = data => {
+    if (vehicleData.length) {
+      const lastYearDates = getActualYearDates()
+      getRangeDateItems({
+        data: vehicleData,
+        itemProperty: 'initialDate',
+        start: lastYearDates.start,
+        end: lastYearDates.end
+      }).map(item => {
+        const date = moment(item.initialDate)
+        data.series[0][date.month()]++
+      })
+    }
+    return data
+  }
+
   const classes = useStyles()
   return (
-    <div style={{ paddingTop: '50px' }}>
+    <div>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card chart>
+            <CardHeader color='danger'>
+              <ChartistGraph
+                className='ct-chart'
+                data={getVehiclesByDay(completedTasksChart.data)}
+                type='Line'
+                options={completedTasksChart.options}
+                listener={completedTasksChart.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Vehiculos ingresados</h4>
+              <p className={classes.cardCategory}>
+                Cantidad de vehiculos recibidos en lo que va del año
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> Última actualización: Hace unos instantes
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color='success'>
               <ChartistGraph
                 className='ct-chart'
-                data={dailySalesChart.data}
+                data={getUsersByWeek(dailySalesChart.data)}
                 type='Line'
                 options={dailySalesChart.options}
                 listener={dailySalesChart.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Usuarios semanales</h4>
+              <h4 className={classes.cardTitle}>Usuarios por semana</h4>
               <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{' '}
-                Aumento de los clientes.
+                Cantidad de usuarios ingresados entre {getLastWeekDates().start}{' '}
+                y {getLastWeekDates().end}
               </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> actualizado hace 4 minutos
+                <AccessTime /> Última actualización: Hace unos instantes
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color='warning'>
               <ChartistGraph
                 className='ct-chart'
-                data={emailsSubscriptionChart.data}
+                data={getUsersByMonth(emailsSubscriptionChart.data)}
                 type='Bar'
                 options={emailsSubscriptionChart.options}
                 responsiveOptions={emailsSubscriptionChart.responsiveOptions}
@@ -71,36 +170,12 @@ export default function Balance() {
             <CardBody>
               <h4 className={classes.cardTitle}>Usuarios mensuales</h4>
               <p className={classes.cardCategory}>
-                Cantidad de usuarios recibidos al mes
+                Cantidad de usuarios registrados por mes
               </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> actualizado hace 2 días
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color='danger'>
-              <ChartistGraph
-                className='ct-chart'
-                data={completedTasksChart.data}
-                type='Line'
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Usuarios diarios</h4>
-              <p className={classes.cardCategory}>
-                Cantidad de usuarios recibidos en el día
-              </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> actuaizado hace 2 días
+                <AccessTime /> Última actualización: Hace unos instantes
               </div>
             </CardFooter>
           </Card>

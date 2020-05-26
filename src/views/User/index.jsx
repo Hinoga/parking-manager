@@ -116,8 +116,11 @@ export default function User() {
                 identification: 'Identificación',
                 name: 'Nombre',
                 lastname: 'Apellido',
-                address: 'Dirección',
                 mail: 'Correo',
+                placa: 'Placa',
+                address: 'Dirección',
+                ciudad: 'Ciudad',
+                date: 'Fin de mensualidad',
                 actions: 'Acciones'
               }}
               tableData={data}

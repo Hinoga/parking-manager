@@ -16,6 +16,30 @@ export const getSpecificFullDate = date =>
 
 export const getTimeAgo = date => moment(date).fromNow()
 
+export const getLastWeekDates = _ => {
+  return {
+    start: moment()
+      .subtract(1, 'weeks')
+      .startOf('week')
+      .format('YYYY-MM-DD'),
+    end: moment()
+      .subtract(1, 'weeks')
+      .endOf('week')
+      .format('YYYY-MM-DD')
+  }
+}
+
+export const getActualYearDates = _ => {
+  return {
+    start: moment()
+      .startOf('year')
+      .format('YYYY-MM-DD'),
+    end: moment()
+      .endOf('year')
+      .format('YYYY-MM-DD')
+  }
+}
+
 export const getTotalCost = (initial, type) => {
   const finalDate = getFullDateNow()
   const duration = moment.duration(moment().diff(moment(initial)))
@@ -34,4 +58,11 @@ export const numToCurrency = number => {
     style: 'currency',
     currency: 'COP'
   }).format(n)
+}
+
+export const getRangeDateItems = ({ data, itemProperty, start, end }) => {
+  const result = data.filter(
+    item => item[itemProperty] >= start && item[itemProperty] <= end
+  )
+  return result
 }

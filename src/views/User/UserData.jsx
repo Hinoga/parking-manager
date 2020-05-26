@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 
 import GridItem from 'components/Grid/GridItem.js'
 import GridContainer from 'components/Grid/GridContainer.js'
+import Button from '../../components/CustomButtons/Button'
 import ListInputs from '../../components/Input/ListInputs'
+
 import userFields from '../../variables/fields/user'
 import useForm from '../../hooks/useForm'
 import { useFirebase } from '../../context/firebase'
 import { snackMessage } from '../../variables/alert/alerts'
-
-import Button from '../../components/CustomButtons/Button'
+import { getFullDateNow } from '../../variables/utils'
 
 const UserData = props => {
   const { selected, toggle } = props
@@ -49,7 +50,8 @@ const UserData = props => {
       firebase
         .clientsData()
         .add({
-          ...newData
+          ...newData,
+          created: getFullDateNow()
         })
         .then(_ => {
           snackMessage(
