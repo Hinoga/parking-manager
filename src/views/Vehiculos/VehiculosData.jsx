@@ -75,7 +75,7 @@ const VehiculosData = props => {
         .then(_ => {
           snackMessage(
             'Felicidades!',
-            'El usuario ha sido creado exitosamente',
+            'El vehiculo ha sido ingresado exitosamente',
             'success'
           )
           toggle()
@@ -83,7 +83,7 @@ const VehiculosData = props => {
         .catch(error => {
           snackMessage(
             'Ups!',
-            'Ha ocurrido un error al intentar crear el usuario',
+            'Ha ocurrido un error al intentar ingresar el vehiculo',
             'error'
           )
         })

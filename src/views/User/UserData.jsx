@@ -9,7 +9,7 @@ import userFields from '../../variables/fields/user'
 import useForm from '../../hooks/useForm'
 import { useFirebase } from '../../context/firebase'
 import { snackMessage } from '../../variables/alert/alerts'
-import { getFullDateNow } from '../../variables/utils'
+import { getFullDateNow, getSpecificFullDate } from '../../variables/utils'
 
 const UserData = props => {
   const { selected, toggle } = props
@@ -24,6 +24,7 @@ const UserData = props => {
   const handlerSubmit = ev => {
     ev.preventDefault()
     const newData = form.getJson()
+    newData.date = getSpecificFullDate(newData.date)
     if (Object.keys(selected).length) {
       firebase
         .clientData(selected.id)
