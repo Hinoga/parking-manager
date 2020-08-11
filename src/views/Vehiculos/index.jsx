@@ -42,6 +42,14 @@ export default function Vehiculos() {
             id: snap.id,
             ...snap.data()
           }))
+          let newParkingPlaces = { ...parkingPlaces }
+          vehiclesToSave.map(({ place, placa }) => {
+            newParkingPlaces[place] = {
+              state: 1,
+              name: placa
+            }
+          })
+          setParkingPlaces(newParkingPlaces)
           setData(vehiclesToSave)
         }
       },

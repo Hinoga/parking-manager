@@ -63,8 +63,14 @@ const VehiculosData = props => {
           )
         })
       let newParkingPlaces = { ...parkingPlaces }
-      newParkingPlaces[selected.place].state = 0
-      newParkingPlaces[newData.place].state = 1
+      newParkingPlaces[selected.place] = {
+        state: 0,
+        name: ''
+      }
+      newParkingPlaces[newData.place] = {
+        state: 1,
+        name: newData.placa
+      }
       setParkingPlaces(newParkingPlaces)
     } else {
       firebase

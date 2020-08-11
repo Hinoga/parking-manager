@@ -21,6 +21,7 @@ const ParkingView = ({ parkingPlaces }) => {
         return `${parkinClass} ${classes.divTableCellUnassigned}`
     }
   }
+
   return (
     <div className={classes.container}>
       <div className={classes.divTable}>
@@ -35,6 +36,7 @@ const ParkingView = ({ parkingPlaces }) => {
                       key={i + j}
                     >
                       <p>{i + j}</p>
+                      <p>{parkingPlaces[i + j].name}</p>
                     </div>
                   )
                 })}

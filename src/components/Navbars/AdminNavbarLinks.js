@@ -16,7 +16,9 @@ import Search from '@material-ui/icons/Search'
 
 import CustomInput from 'components/CustomInput/CustomInput.js'
 import Button from 'components/CustomButtons/Button.js'
+import Modal from 'components/Modal/Modal.jsx'
 import { useUser } from 'context/user'
+import AdminData from '../../views/User/AdminData'
 
 import styles from 'assets/jss/material-dashboard-react/components/headerLinksStyle.js'
 
@@ -25,8 +27,10 @@ const useStyles = makeStyles(styles)
 export default function AdminNavbarLinks() {
   const classes = useStyles()
   const [user, dispatchUser] = useUser()
+  const [userModal, setUserModal] = React.useState(false)
   const [openNotification, setOpenNotification] = React.useState(null)
   const [openProfile, setOpenProfile] = React.useState(null)
+
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null)
@@ -34,9 +38,11 @@ export default function AdminNavbarLinks() {
       setOpenNotification(event.currentTarget)
     }
   }
+
   const handleCloseNotification = () => {
     setOpenNotification(null)
   }
+
   const handleClickProfile = event => {
     if (openProfile && openProfile.contains(event.target)) {
       setOpenProfile(null)
@@ -44,11 +50,25 @@ export default function AdminNavbarLinks() {
       setOpenProfile(event.currentTarget)
     }
   }
+
   const handleCloseProfile = () => {
     setOpenProfile(null)
   }
+
+  const submitAdminData = data => {
+    dispatchUser.updateData(data)
+    setUserModal(!userModal)
+  }
+
   return (
-    <div>
+    <>
+      <Modal
+        openModal={userModal}
+        onToggleModal={() => setUserModal(!userModal)}
+        title='Usuario'
+      >
+        <AdminData selected={user} handleSubmit={submitAdminData} />
+      </Modal>
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -169,13 +189,13 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role='menu'>
-                    {/* <MenuItem
-                      onClick={handleCloseProfile}
+                    <MenuItem
+                      onClick={() => setUserModal(!userModal)}
                       className={classes.dropdownItem}
                     >
-                      Perfil
+                      Editar perfil
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
@@ -197,6 +217,6 @@ export default function AdminNavbarLinks() {
           )}
         </Poppers>
       </div>
-    </div>
+    </>
   )
 }

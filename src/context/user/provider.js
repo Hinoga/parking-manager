@@ -76,11 +76,7 @@ const usersActions = firebase => ({
   },
   updateData: user => {
     const { uid } = firebase.auth.currentUser
-    return firebase.userData(uid).update({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phone: user.phone
-    })
+    return firebase.userData(uid).update(user)
   }
 })
 

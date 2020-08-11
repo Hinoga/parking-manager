@@ -117,7 +117,7 @@ const Login = () => {
           </GridItem>
         </GridContainer>
       </GridItem>
-      <GridItem xs={12} sm={6}>
+      {/* <GridItem xs={12} sm={6}>
         <GridItem xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
           <h3>Crear cuenta</h3>
         </GridItem>
@@ -179,7 +179,7 @@ const Login = () => {
             </Button>
           </GridItem>
         </GridContainer>
-      </GridItem>
+      </GridItem> */}
     </div>
   )
 }
