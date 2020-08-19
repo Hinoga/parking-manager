@@ -99,8 +99,8 @@ const Login = () => {
             <TextField
               variant='outlined'
               autoComplete='none'
-              type='text'
               name='password'
+              type='password'
               placeholder='Contraseña'
               style={{ width: '100%' }}
               value={formLogin.password}

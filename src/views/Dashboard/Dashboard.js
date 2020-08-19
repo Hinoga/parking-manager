@@ -32,12 +32,12 @@ const Dashboard = _ => {
                 <Accessibility />
               </CardIcon>
               <p className={classes.cardCategory}>Sección:</p>
-              <h3 className={classes.cardTitle}>Usuarios</h3>
+              <h3 className={classes.cardTitle}>Clientes</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <ChevronRight />
-                <Link href='/admin/usuarios'>Ir a sección de usuarios</Link>
+                <Link href='/admin/clientes'>Ir a sección de clientes</Link>
               </div>
             </CardFooter>
           </Card>

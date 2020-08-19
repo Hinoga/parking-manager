@@ -38,7 +38,7 @@ export default function User() {
       error => {
         snackMessage(
           'Ups!',
-          'Ha ocurrido un error al intentar obtener los usuarios',
+          'Ha ocurrido un error al intentar obtener los clientes',
           'error'
         )
       }
@@ -104,9 +104,9 @@ export default function User() {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color='success'>
-            <h4 className={classes.cardTitleWhite}>Usuarios</h4>
+            <h4 className={classes.cardTitleWhite}>Clientes</h4>
             <p className={classes.cardCategoryWhite}>
-              Usuarios registrados en el parqueadero
+              Clientes registrados en el parqueadero
             </p>
           </CardHeader>
           <CardBody>

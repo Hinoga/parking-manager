@@ -142,9 +142,9 @@ export default function Balance() {
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Usuarios por semana</h4>
+              <h4 className={classes.cardTitle}>Clientes por semana</h4>
               <p className={classes.cardCategory}>
-                Cantidad de usuarios ingresados entre {getLastWeekDates().start}{' '}
+                Cantidad de clientes ingresados entre {getLastWeekDates().start}{' '}
                 y {getLastWeekDates().end}
               </p>
             </CardBody>
@@ -168,9 +168,9 @@ export default function Balance() {
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Usuarios mensuales</h4>
+              <h4 className={classes.cardTitle}>Clientes mensuales</h4>
               <p className={classes.cardCategory}>
-                Cantidad de usuarios registrados por mes
+                Cantidad de clientes registrados por mes
               </p>
             </CardBody>
             <CardFooter chart>

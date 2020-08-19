@@ -29,7 +29,7 @@ const SearchUser = ({ setUserSelected }) => {
       error => {
         snackMessage(
           'Ups!',
-          'Ha ocurrido un error al intentar obtener los usuarios',
+          'Ha ocurrido un error al intentar obtener los clientes',
           'error'
         )
       }
