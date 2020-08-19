@@ -21,8 +21,8 @@ const dashboardRoutes = [
     layout: '/admin'
   },
   {
-    path: '/usuarios',
-    name: 'Usuarios',
+    path: '/clientes',
+    name: 'Clientes',
     icon: Person,
     component: UserPage,
     layout: '/admin'
