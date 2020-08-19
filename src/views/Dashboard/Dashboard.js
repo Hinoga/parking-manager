@@ -66,12 +66,12 @@ const Dashboard = _ => {
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Sección:</p>
-              <h3 className={classes.cardTitle}>Balances</h3>
+              <h3 className={classes.cardTitle}>Estadísticas</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <ChevronRight />
-                <a href='/admin/balances'>Ir a sección de balances</a>
+                <a href='/admin/estadisticas'>Ir a sección de estadísticas</a>
               </div>
             </CardFooter>
           </Card>

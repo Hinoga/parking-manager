@@ -42,8 +42,8 @@ const dashboardRoutes = [
     layout: '/admin'
   },
   {
-    path: '/balances',
-    name: 'Balances',
+    path: '/estadisticas',
+    name: 'Estadísticas',
     icon: BubbleChart,
     component: BalancePage,
     layout: '/admin'
