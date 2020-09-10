@@ -101,7 +101,7 @@ const Payment = () => {
           setUserSelected={data =>
             data && data.id ? setUserId(data.id) : setUserId(null)
           }
-          label='Buscar el usuario'
+          label='Buscar el CLiente'
         />
       </GridItem>
       {!_.isEmpty(userSelected) ? (
@@ -145,7 +145,7 @@ const Payment = () => {
         </>
       ) : (
         <p className={classes.infoTitleDefault}>
-          Primero busca y selecciona a un usuario
+          Primero busca y selecciona a un Cliente
         </p>
       )}
     </GridContainer>
