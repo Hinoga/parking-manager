@@ -76,6 +76,11 @@ const dashboardStyle = {
       fontWeight: "400",
       lineHeight: "1"
     }
+  },
+  infoTitleDefault: {
+    display: "flex",
+    margin: "0 auto",
+    padding: "50px"
   }
 };
 

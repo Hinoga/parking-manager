@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import Login from './views/Login/Login'
+import Singup from './views/Login/Signup'
 import Admin from 'layouts/Admin.js'
 
 import { useUser } from 'context/user'
@@ -24,6 +25,7 @@ const Routes = _ => {
     return (
       <Switch>
         <Route path={`/login`} render={props => <Login {...props} />} />
+        <Route path={`/sign-up`} render={props => <Singup {...props} />} />
         <Redirect to='/login' />
       </Switch>
     )

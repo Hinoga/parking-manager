@@ -5,7 +5,7 @@ export const initState = {
     loggedIn: false,
     loading: true
   },
-  fullname: '',
+  fullName: '',
   email: '',
   phone: '',
   uid: ''

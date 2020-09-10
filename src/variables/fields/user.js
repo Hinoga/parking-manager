@@ -120,22 +120,5 @@ export default {
     valid: false,
     touched: false,
     error: null
-  },
-  date: {
-    elementLabel: 'Fecha finalización de mensualidad',
-    elementType: 'date-time',
-    elementConfig: {
-      type: 'date-time',
-      name: 'date',
-      required: true
-    },
-    value: getFullDateNow(),
-    validation: {
-      isText: true,
-      required: true
-    },
-    valid: true,
-    touched: true,
-    error: null
   }
 }

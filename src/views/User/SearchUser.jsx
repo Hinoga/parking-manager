@@ -5,7 +5,7 @@ import { useFirebase } from '../../context/firebase'
 
 import { snackMessage } from '../../variables/alert/alerts'
 
-const SearchUser = ({ setUserSelected }) => {
+const SearchUser = ({ setUserSelected, label }) => {
   const firebase = useFirebase()
   const [data, setData] = useState([])
   const [input, setInput] = useState(null)
@@ -53,7 +53,11 @@ const SearchUser = ({ setUserSelected }) => {
         margin: '20px 10px 0px 0px'
       }}
       renderInput={params => (
-        <TextField {...params} label='Usuario' variant='outlined' />
+        <TextField
+          {...params}
+          label={label ? label : 'Usuario'}
+          variant='outlined'
+        />
       )}
     />
   )
