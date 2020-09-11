@@ -134,7 +134,7 @@ const VehiculosData = props => {
                 isFullInfo ? !fullForm.formIsValid : !basicForm.formIsValid
               }
             >
-              {Object.keys(selected).length ? 'Editar' : 'Crear'}
+              {Object.keys(selected).length ? 'Editar' : 'Agregar'}
             </Button>
           </GridItem>
         </GridContainer>

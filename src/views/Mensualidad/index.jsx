@@ -101,7 +101,7 @@ const Payment = () => {
           setUserSelected={data =>
             data && data.id ? setUserId(data.id) : setUserId(null)
           }
-          label='Buscar el CLiente'
+          label='Buscar el Cliente'
         />
       </GridItem>
       {!_.isEmpty(userSelected) ? (
