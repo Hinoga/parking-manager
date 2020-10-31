@@ -12,7 +12,7 @@ const NewVehicleType = ({ handleVehicleType, isFullInfo }) => {
           onClick={() => handleVehicleType(true)}
           disabled={isFullInfo}
         >
-          Usuario con registro
+          Cliente con registro
         </Button>
       </GridItem>
       <GridItem xs={6}>
@@ -22,7 +22,7 @@ const NewVehicleType = ({ handleVehicleType, isFullInfo }) => {
           onClick={() => handleVehicleType(false)}
           disabled={!isFullInfo}
         >
-          Usuario sin registro
+          Cliente sin registro
         </Button>
       </GridItem>
     </GridContainer>

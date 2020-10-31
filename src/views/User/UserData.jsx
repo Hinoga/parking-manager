@@ -88,7 +88,7 @@ const UserData = props => {
           }}
         >
           <Button color='success' type='submit' disabled={!form.formIsValid}>
-            {Object.keys(selected).length ? 'Editar' : 'Crear'}
+            {Object.keys(selected).length ? 'Editar' : 'Agregar'}
           </Button>
         </GridItem>
       </GridContainer>

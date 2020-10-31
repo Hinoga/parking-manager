@@ -109,7 +109,7 @@ export default function User() {
         }}
       >
         <Button color='success' onClick={handleModal}>
-          Crear usuario
+          Agregar Cliente
         </Button>
       </GridItem>
       <GridItem xs={12} sm={12} md={12}>

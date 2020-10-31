@@ -143,10 +143,10 @@ export default function Vehiculos() {
         }}
       >
         <Button color='success' onClick={handleModal}>
-          Agregar vehículo
+          Agregar Ingreso
         </Button>
         <Button color='primary' onClick={() => setParkingModal(!parkingModal)}>
-          Ver parqueaderos
+          Ver Parqueaderos
         </Button>
       </GridItem>
       <GridItem xs={12} sm={12} md={12}>
