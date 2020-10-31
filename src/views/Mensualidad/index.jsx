@@ -4,12 +4,10 @@ import _ from 'lodash'
 
 import GridItem from 'components/Grid/GridItem.js'
 import GridContainer from 'components/Grid/GridContainer.js'
-import Modal from 'components/Modal/Modal.jsx'
 import Table from 'components/Table/Table.js'
 import Card from 'components/Card/Card.js'
 import CardHeader from 'components/Card/CardHeader.js'
 import CardBody from 'components/Card/CardBody.js'
-import Button from 'components/CustomButtons/Button.js'
 
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
 
@@ -17,7 +15,6 @@ import SearchUser from '../User/SearchUser'
 import { snackMessage, questionMessage } from '../../variables/alert/alerts'
 import { useFirebase } from '../../context/firebase'
 import { useModal } from '../../hooks/useModal'
-import PaymentData from './PaymentData'
 
 const useStyles = makeStyles(styles)
 
@@ -89,13 +86,6 @@ const Payment = () => {
 
   return (
     <GridContainer>
-      <Modal
-        openModal={paymentModal.modalOpen}
-        onToggleModal={() => paymentModal.toggle()}
-        title='Mensualidad'
-      >
-        <PaymentData user={userSelected} toggle={paymentModal.toggle} />
-      </Modal>
       <GridItem xs={12}>
         <SearchUser
           setUserSelected={data =>
@@ -106,17 +96,6 @@ const Payment = () => {
       </GridItem>
       {!_.isEmpty(userSelected) ? (
         <>
-          <GridItem
-            xs={12}
-            style={{
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            <Button color='success' onClick={() => paymentModal.toggle()}>
-              Agregar mensualidad nueva
-            </Button>
-          </GridItem>
           <GridItem xs={12}>
             <Card>
               <CardHeader color='success'>

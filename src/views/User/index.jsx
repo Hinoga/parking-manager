@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
+import MonetizationOn from '@material-ui/icons/MonetizationOn'
 
 import GridItem from 'components/Grid/GridItem.js'
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -15,11 +16,14 @@ import { snackMessage, questionMessage } from '../../variables/alert/alerts'
 import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
 import { useFirebase } from '../../context/firebase'
 import UserDataPage from './UserData'
+import { useModalWithData } from '../../hooks/useModal'
+import PaymentData from 'views/Mensualidad/PaymentData'
 const useStyles = makeStyles(styles)
 
 export default function User() {
   const classes = useStyles()
   const firebase = useFirebase()
+  const paymentModal = useModalWithData()
   const [modal, setModal] = useState(false)
   const [data, setData] = useState([])
   const [selected, setSelected] = useState({})
@@ -80,6 +84,13 @@ export default function User() {
 
   return (
     <GridContainer>
+      <Modal
+        openModal={paymentModal.modal}
+        onToggleModal={() => paymentModal.handleModal()}
+        title='Mensualidad'
+      >
+        <PaymentData user={paymentModal.selected} toggle={paymentModal.handleModal} />
+      </Modal>
       <Modal openModal={modal} onToggleModal={handleModal} title='Usuario'>
         <UserDataPage
           setData={setData}
@@ -126,6 +137,13 @@ export default function User() {
               tableData={data}
               onEdit={handleModal}
               onRemove={onRemove}
+              extraActions={[
+                {
+                  title: 'Generar mensualidad',
+                  action: (_, data) => paymentModal.handleModal(data),
+                  Component: () => <MonetizationOn />
+                }
+              ]}
             />
           </CardBody>
         </Card>
