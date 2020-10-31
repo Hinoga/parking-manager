@@ -163,7 +163,7 @@ export default function Vehiculos() {
               tableHead={{
                 placa: 'Placa',
                 ciudad: 'Cuidad',
-                user: 'Usuario',
+                user: 'Cliente',
                 place: 'N. parqueadero',
                 date: 'Fecha de ingreso',
                 type: 'Tipo de vehículo',

@@ -52,7 +52,7 @@ export default function User() {
   const onRemove = (id, item) => {
     questionMessage(
       'Cuidado',
-      '¿Seguro que quieres eliminar este usuario?',
+      '¿Seguro que quieres eliminar este cliente?',
       'warn',
       () => {
         firebase
@@ -61,14 +61,14 @@ export default function User() {
           .then(_ => {
             snackMessage(
               'Felicidades!',
-              'El usuario ha sido eliminado exitosamente',
+              'El cliente ha sido eliminado exitosamente',
               'success'
             )
           })
           .catch(error => {
             snackMessage(
               'Ups!',
-              'Ha ocurrido un error al intentar eliminar el usuario',
+              'Ha ocurrido un error al intentar eliminar el cliente',
               'error'
             )
           })
@@ -91,7 +91,7 @@ export default function User() {
       >
         <PaymentData user={paymentModal.selected} toggle={paymentModal.handleModal} />
       </Modal>
-      <Modal openModal={modal} onToggleModal={handleModal} title='Usuario'>
+      <Modal openModal={modal} onToggleModal={handleModal} title='Cliente'>
         <UserDataPage
           setData={setData}
           data={data}
