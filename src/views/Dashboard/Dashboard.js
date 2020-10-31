@@ -76,6 +76,23 @@ const Dashboard = _ => {
             </CardFooter>
           </Card>
         </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color='info' stats icon>
+              <CardIcon  color='info'>
+                <Accessibility />
+              </CardIcon>
+              <p className={classes.cardCategory}>Sección:</p>
+              <h3 className={classes.cardTitle}>Mensualidad</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <ChevronRight />
+                <Link href='/admin/mesualidad'>Ir a sección de mensualidad</Link>
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
       </GridContainer>
     </div>
   )
