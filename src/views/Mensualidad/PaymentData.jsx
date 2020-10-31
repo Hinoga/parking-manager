@@ -20,21 +20,21 @@ const PaymentData = props => {
   const handlerSubmit = ev => {
     ev.preventDefault()
     if (!_.isEmpty(user)) {
-      const newPayments = []
+      let newPayments = {}
       let len = 0
-      if (user.payments && user.payments.length) {
-        newPayments.push(user.payments)
-        len = user.payments.length
+      if (user.payments) {
+        newPayments = user.payments
+        len = Object.keys(user.payments).length
       }
       const newData = form.getJson()
       newData.date_start = getSpecificFullDate(newData.date_start)
       newData.date_end = getSpecificFullDate(newData.date_end)
-      newPayments.push({ ...newData, id: len + 1 })
+      newPayments[len + 1]  = { ...newData, id: len+1 }
       firebase
         .clientData(user.id || user.uid)
         .update({
           hasActivePayment: true,
-          payments: newPayments
+          payments:  newPayments
         })
         .then(_ => {
           snackMessage(

@@ -22,7 +22,7 @@ const Payment = () => {
   const classes = useStyles()
   const firebase = useFirebase()
   const paymentModal = useModal()
-  const [paymentData, setPaymentData] = useState([])
+  const [paymentData, setPaymentData] = useState({})
   const [userSelected, setUserSelected] = useState({})
   const [userId, setUserId] = useState(null)
 
@@ -33,7 +33,7 @@ const Payment = () => {
           if (snapshot.exists) {
             const data = snapshot.data()
             const paymentsToSave =
-              data.payments && data.payments.length ? data.payments : []
+              data.payments ? data.payments : {}
             delete data.payments
             setUserSelected({ ...data, id: snapshot.id })
             setPaymentData(paymentsToSave)
@@ -54,13 +54,16 @@ const Payment = () => {
     }
   }, [userId])
 
-  const onRemove = (id, item) => {
+  const onRemove = (id, item, indx) => {
     questionMessage(
       'Cuidado',
       '¿Seguro que quieres eliminar esta mensualidad?',
       'warn',
       () => {
-        const newPayments = paymentData.filter(({ id }) => id !== item.id)
+        const newPayments = Object.keys(paymentData).reduce(function(r, e) {
+          if (id !== paymentData[e].id) r[e] = paymentData[e]
+          return r;
+        }, {})
         firebase
           .clientData(userSelected.id)
           .update({
@@ -82,6 +85,15 @@ const Payment = () => {
           })
       }
     )
+  }
+
+  const formattedData = data => {
+    let returnData = []
+    console.log({data})
+    _.mapValues(data, (value, key) => {
+      returnData.push({...value})
+    })
+    return returnData
   }
 
   return (
@@ -115,7 +127,7 @@ const Payment = () => {
                     amout: 'Valor',
                     actions: 'Acciones'
                   }}
-                  tableData={paymentData}
+                  tableData={formattedData(paymentData)}
                   onRemove={onRemove}
                 />
               </CardBody>
