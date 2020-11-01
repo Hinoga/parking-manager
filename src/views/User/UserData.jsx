@@ -34,7 +34,7 @@ const UserData = props => {
         .then(_ => {
           snackMessage(
             'Felicidades!',
-            'El usuario ha sido editado exitosamente',
+            'El cliente ha sido editado exitosamente',
             'success'
           )
           form.onReset()
@@ -43,7 +43,7 @@ const UserData = props => {
         .catch(error => {
           snackMessage(
             'Ups!',
-            'Ha ocurrido un error al intentar editar el usuario',
+            'Ha ocurrido un error al intentar editar el cliente',
             'error'
           )
         })
@@ -57,7 +57,7 @@ const UserData = props => {
         .then(_ => {
           snackMessage(
             'Felicidades!',
-            'El usuario ha sido creado exitosamente',
+            'El cliente ha sido creado exitosamente',
             'success'
           )
           form.onReset()
@@ -66,7 +66,7 @@ const UserData = props => {
         .catch(error => {
           snackMessage(
             'Ups!',
-            'Ha ocurrido un error al intentar crear el usuario',
+            'Ha ocurrido un error al intentar crear el cliente',
             'error'
           )
         })

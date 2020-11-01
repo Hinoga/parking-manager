@@ -55,7 +55,7 @@ const SearchUser = ({ setUserSelected, label }) => {
       renderInput={params => (
         <TextField
           {...params}
-          label={label ? label : 'Usuario'}
+          label={label ? label : 'Cliente'}
           variant='outlined'
         />
       )}
