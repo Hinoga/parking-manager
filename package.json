@@ -11,7 +11,7 @@
     "@material-ui/pickers": "^3.2.10",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
-    "firebase": "^7.13.1",
+    "firebase": "^10.9.0",
     "history": "4.9.0",
     "izitoast": "^1.4.0",
     "lodash": "^4.17.20",
